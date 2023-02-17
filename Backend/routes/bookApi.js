@@ -9,13 +9,13 @@ const router = express.Router();
 
 router.post('/addBook', passport.authenticate('bearer', { session: false }),authRole("admin"), upload.single('file'),  createBook);
 
-router.get('/Books', passport.authenticate('bearer', { session: false }), getBooks);
+router.get('/books', passport.authenticate('bearer', { session: false }), getBooks);
 
-router.get('/Books/:id', passport.authenticate('bearer', { session: false }), getBookById);
+router.get('/books/:id', passport.authenticate('bearer', { session: false }), getBookById);
 
-router.put('/Books/:idBook',passport.authenticate('bearer', { session: false }),authRole("admin"), upload.single('file'),  updateBook);
+router.put('/books/:id',passport.authenticate('bearer', { session: false }),authRole("admin"), upload.single('file'),  updateBook);
 
-router.delete('/Books/:idBook', passport.authenticate('bearer', { session: false }),authRole("admin"), deleteBook);
+router.delete('/books/:id', passport.authenticate('bearer', { session: false }),authRole("admin"), deleteBook);
 
 
 export default router
