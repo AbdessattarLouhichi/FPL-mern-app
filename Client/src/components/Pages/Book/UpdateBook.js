@@ -1,7 +1,7 @@
 import React, {useState,useEffect} from 'react';
 import {Link, useNavigate,useParams} from 'react-router-dom';
 import { v1 as uuidv1} from 'uuid';
-import axios from 'axios';
+import axios from '../../../config/config'
 
 function UpdateBook() {
 
@@ -74,7 +74,7 @@ const handleChange = (e)=>{
     )
     .then(response =>{
       console.log(response)
-      navigate ('/admin/dashboard')
+      navigate ('/admin/books')
       })
     .catch(error =>{console.log(error.message)})
   }
@@ -115,9 +115,9 @@ const handleChange = (e)=>{
                 </select>
               </div>
           
-              {/*Click button  to add product*/}
+         
               <div className=' '>
-              <button  type="submit"   className="btn  btn-dark  font-weight-bold">Update Product</button>
+              <button  type="submit"   className="btn  btn-dark  font-weight-bold">Update Book</button>
               </div>
               
             </form>

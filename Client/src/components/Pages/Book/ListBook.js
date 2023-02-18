@@ -1,6 +1,6 @@
 import React, { useReducer, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import axios from 'axios';
+import axios from '../../../config/config'
 
 
 const initialState ={

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import { v1 as uuidv1} from 'uuid';
-import axios from 'axios';
+import axios from '../../../config/config'
 
 function AddCategory() {
   const navigate = useNavigate();

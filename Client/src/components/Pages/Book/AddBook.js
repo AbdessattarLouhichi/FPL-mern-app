@@ -1,7 +1,7 @@
 import React, {useState,useEffect} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 //import { v1 as uuidv1} from 'uuid';
-import axios from 'axios';
+import axios from '../../../config/config'
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
@@ -31,7 +31,7 @@ function AddBook() {
     axios.post('/addBook',values)
     .then(response =>{
       console.log(response.data)
-      navigate ('/admin/dashboard')
+      navigate ('/admin/books')
       })
     .catch(error =>{console.log(error.message)})
   }
