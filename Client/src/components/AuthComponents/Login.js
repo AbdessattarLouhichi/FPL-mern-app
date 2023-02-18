@@ -44,7 +44,7 @@ let[ {id, firstName, lastName,inputEmail,userPhoto }] = user;
 }
 
   const onSubmit =  async (values)=>{
-    await  axios.get('login')
+    await  axios.get('/login')
         .then(response =>{ setUser(response.data);
           saveUser(response.data)
               const Found = response.data.find(user => user.inputEmail === values.Email && user.inputPassword === values.Password)
