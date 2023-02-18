@@ -58,16 +58,16 @@ function ListBook() {
   return (
     
     <section>
-    { /*Main product section Start*/}
+   
      <div className="container-md py-5">
        <div className="row d-flex justify-content-center align-items-center  mt-5">
          <div className="col-md-12 col-xl-10">
            <div className="card">
              <div className="card-header p-3 bg-secondary d-flex justify-content-between stiky-top">
-               <h5 className="mb-0 mt-2 text-white"><i className="fa-solid fa-list-check me-2"></i>List of Products</h5>
+               <h5 className="mb-0 mt-2 text-white"><i className="fa-solid fa-list-check me-2"></i>List of Books</h5>
                <div className="d-flex">
-               <Link to="/addBook" className="btn btn-success fw-bold d-flex mx-2"><i className="material-icons me-2">&#xE147;</i> Add Product</Link>
-               <Link to="/addCategory" className="btn btn-success fw-bold d-flex"><i className="material-icons me-2">&#xE147;</i> Add Category</Link>
+               <Link to="/admin/addBook" className="btn btn-success fw-bold d-flex mx-2"><i className="material-icons me-2">&#xE147;</i> Add Book</Link>
+               <Link to="/admin/addCategory" className="btn btn-success fw-bold d-flex"><i className="material-icons me-2">&#xE147;</i> Add Category</Link>
                </div>
               
              </div>
@@ -83,8 +83,8 @@ function ListBook() {
                     </tr>
                   </thead>
                   <tbody>
-                    {  /*  Create a Product List  */ 
-                        state.loading ? 'loading' :   state.products.map((item)=>
+                    {   
+                        state.loading ? 'loading' :   state.books.map((item)=>
                             <tr key={item.id}> 
                                 <td>{item.title}</td>
                                 <td>{item.author}</td>
@@ -111,7 +111,7 @@ function ListBook() {
          </div>
        </div>
      </div>
-       {/*  Main Product section End */}
+     
    </section>
   )
 }
