@@ -31,7 +31,7 @@ function Register() {
 
     const handleUser =  (values)=>{
         console.log(values.userPhoto)
-        axios.post('http://localhost:3000/users',values)
+        axios.post('/register',values)
         .then(response =>{
                             console.log(response.data)
                             navigate ('/login')
@@ -63,10 +63,10 @@ function Register() {
          
   return (
    
-    <div class="row d-flex justify-content-center align-items-center h-50">
-    <div class="col-12 col-md-8 my-3">
+    <div className="row d-flex justify-content-center align-items-center h-50">
+    <div className="col-12 col-md-8 my-3">
       <div  className="card bg-dark text-white" style={{borderRadius: "1rem"}}>
-        <div class="card-body p-5">
+        <div className="card-body p-5">
           <div className='mb-md-5 mt-md-4 pb-3'>
             <h2 className='text-center text-uppercase mb-5'>Create an account</h2>
             <Formik
