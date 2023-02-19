@@ -27,7 +27,7 @@ function AddCategory() {
     })
     .then(response =>{
       console.log(response.data)
-      navigate ('/admin/dashboard')
+      navigate ('/admin/books')
       })
     .catch(error =>{console.log(error.message)})
   }

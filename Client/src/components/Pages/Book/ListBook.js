@@ -77,6 +77,7 @@ function ListBook() {
                     <tr>
                       <th scope="col">Title</th>
                       <th scope="col">Author</th>
+                      <th scope="col">Category</th>
                       <th scope="col">Description</th>
                       <th scope="col">Link</th>
                       <th scope="col">Actions</th>
@@ -93,7 +94,7 @@ function ListBook() {
                                 <td>{item.link}</td>
                                 <td className="align-middle">
                                   
-                                  <Link  to={"/admin/books/" +item.id} onClick={() => setData(item)} data-toggle='modal' className='btn btn-success mx-2' data-target='#edit'  data-mdb-toggle="tooltip" title="Done">
+                                  <Link  to={"/admin/books/" +item.id}   className='btn btn-success mx-2'>
                                         <i className="fas fa-pencil-alt text-white"></i>
                                   </Link>                           
                                   <button title="Remove" className='btn btn-danger' onClick={()=> removeBook(item.id)}>

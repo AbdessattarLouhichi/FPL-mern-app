@@ -1,6 +1,7 @@
 import {lazy} from "react"
 const Home = lazy(() => import('./components/Home'))
 const AddBook = lazy(()=> import('./components/Pages/Book/AddBook'))
+const UpdateBook = lazy(() => import('./components/Pages/Book/UpdateBook'))
 const ListBook = lazy(()=> import('./components/Pages/Book/ListBook'))
 const ListCategory = lazy(()=> import('./components/Pages/Category/ListCategory'))
 const AddCategory = lazy(()=> import('./components/Pages/Category/AddCategory'))
@@ -16,6 +17,12 @@ export const routes = [
         path: '/admin/books',
         element: ListBook,
         name:'Books',
+        exact: true
+    },
+    {
+        path: '/admin/books/id',
+        element: UpdateBook,
+        name:'UpdateBook',
         exact: true
     },
     {

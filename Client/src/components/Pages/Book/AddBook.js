@@ -35,26 +35,27 @@ function AddBook() {
       })
     .catch(error =>{console.log(error.message)})
   }
+  const handleFileUpload = async (e,setFieldValue)=>{
+    const file = e.target.files[0];
+    console.log(file)
+    setFieldValue('image', file)
+  }
 
   const initialValues ={
-    Name: '',
-    Category:'',
-    Description:'',
-    Price:'',
-    Quantity: '', 
+    title: '',
+    author:'',
+    category:'',
+    description:'', 
   }
 
   const validationSchema = Yup.object({
-    Name: Yup.string()
+    title: Yup.string()
       .required('Required!'),
-    Description: Yup.string()
+    description: Yup.string()
     .required('required!'),
-    Price: Yup.number()
+    author: Yup.string()
     .required('required!'),
-    Quantity: Yup.number()
-    .required('required!'),
-    Category: Yup.string()
-    .required('required!'),
+    category: Yup.string()
   })
 
   return (

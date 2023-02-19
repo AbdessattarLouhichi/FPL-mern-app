@@ -47,7 +47,7 @@ let[ {id, firstName, lastName,inputEmail,userPhoto }] = user;
     await  axios.post('/login')
         .then(response =>{ setUser(response.data);
           saveUser(response.data)
-              const Found = response.data.find(user => user.inputEmail === values.Email && user.inputPassword === values.Password)
+              const Found = response.data.find(user => user.email === values.email && user.password === values.password)
               if (Found) {
                 warning && setWarning(false)
                 //SUCCESS LOGIN MESSAGE!  You are successfully logged in
@@ -80,15 +80,15 @@ let[ {id, firstName, lastName,inputEmail,userPhoto }] = user;
                     return(
                     <Form className="row g-3">
                         <div className="form-outline form-white my-2">
-                            <label htmlFor="Email" className="">Email</label>
-                            <Field type="text"  className="form-control rounded-pill bg-dark text-white" id="Email" name='Email'  placeholder='example@mail'/>
-                            <ErrorMessage name='Email' component={'div'} className="text-danger"/>
+                            <label htmlFor="email" className="">Email</label>
+                            <Field type="text"  className="form-control rounded-pill bg-dark text-white" id="email" name='email'  placeholder='example@mail'/>
+                            <ErrorMessage name='email' component={'div'} className="text-danger"/>
                         </div>
                         
                         <div className="form-outline form-white my-2">
-                            <label htmlFor="Password" className="">Password</label>
-                            <Field type="password" className="form-control rounded-pill bg-dark text-white" id="Password" name='Password'   placeholder="Password"/>
-                            <ErrorMessage name='Password' component={'div'} className="text-danger"/>
+                            <label htmlFor="password" className="">Password</label>
+                            <Field type="password" className="form-control rounded-pill bg-dark text-white" id="password" name='password'   placeholder="Password"/>
+                            <ErrorMessage name='password' component={'div'} className="text-danger"/>
                         </div>
                         <div className="text-center d-grid gap-2">
                             <button type="submit" onClick={()=> saveUser(user)} className="btn btn-outline-light btn-lg px-5 rounded-pill" disabled={!formik.isValid}>Sign In</button>
