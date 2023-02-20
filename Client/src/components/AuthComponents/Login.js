@@ -1,97 +1,89 @@
-import React,{useState}  from 'react';
-import {Link, useNavigate} from 'react-router-dom';
+import React,{useState}  from 'react'
 import axios from '../../config/config'
-import { Formik, Form, ErrorMessage,Field } from 'formik';
+import 'react-toastify/dist/ReactToastify.css'
+import { toast, ToastContainer } from 'react-toastify'
+import {Link, useNavigate} from 'react-router-dom'
+import { Formik, Form, ErrorMessage,Field } from 'formik'
 import * as Yup from 'yup';
 
+
+
 function Login() {
+  const navigate = useNavigate()
+ 
+  const [warning, setWarning] = useState(false)
 
   const initialValues = {
-    Email: '',
-    Password: ''
+    email: '',
+    password: ''
   }
-
   const validationSchema = Yup.object({
-    Email: Yup.string()
+    email: Yup.string()
       .email('Invalid email format')
       .required('Required'),
-    Password: Yup.string()
+    password: Yup.string()
     .required('Password is required')
     .min(8, 'Password is too short - should be 8 chars minimum.')
     .matches(/[a-zA-Z]/, 'Password can only contain Latin letters.'),
   })
-  const navigate = useNavigate();
-
-  const [warning, setWarning] = useState(false);
-  const [user, setUser] = useState([{
-    id:'',
-    Name:'',
-    lastName: '',
-    Email:'',
-    userPhoto :''
-}]);
-
-
-
-const saveUser = (user) => {
-  console.log(user)
-let[ {id, firstName, lastName,inputEmail,userPhoto }] = user;
-      localStorage.setItem('ID', id);
-      localStorage.setItem('Name', firstName);
-      localStorage.setItem('lastName', lastName);
-      localStorage.setItem('Email', inputEmail);
-      localStorage.setItem('userPhoto', userPhoto);
-}
-
-  const onSubmit =  async (values)=>{
-    await  axios.post('/login')
-        .then(response =>{ setUser(response.data);
-          saveUser(response.data)
-              const Found = response.data.find(user => user.email === values.email && user.password === values.password)
-              if (Found) {
-                warning && setWarning(false)
-                //SUCCESS LOGIN MESSAGE!  You are successfully logged in
-                navigate('/home')
-
-            } else {
-                setWarning(true)
-            }
-        })
-        .catch(err=>{console.log(err.message)})   
+  
+  const loginUser = async (values) => {
+    await (axios.post('/login', values))
+    .then((response) =>{  console.log(response);
+      localStorage.setItem('token', response.data.token)
+      localStorage.setItem('id', response.data.id)
+      warning && setWarning(false)
+      //SUCCESS LOGIN MESSAGE!  You are successfully logged in
+      toast.success(response.payload.message, {
+        position: "top-center",
+      })
+      setTimeout(()=>{
+        navigate('/')
+      },3000)
+    })
+    .catch(()=>{
+      setWarning(false)
+    }) 
   }
-
+ 
   const warningMsg = warning && <div className='alert alert-danger mt-5'>Please check your email and password and try again !</div>
 
 
   return (
-    <div className="row d-flex justify-content-center align-items-center h-50">
-      <div className="col-12 col-md-8 col-lg-6 col-xl-5 my-3">
-        <div  className="card bg-dark text-white" style={{borderRadius: "1rem"}}>
-          <div className="card-body p-5">
-            <div className='mb-md-5 mt-md-4 pb-3'>
-              <h2 className="fw-bold mb-2 text-uppercase text-center">Login</h2>
-              <p className="text-white-50 mb-5 text-center">Please enter your login and password!</p>
-                  {warningMsg}
-              <Formik 
-                  initialValues={initialValues}
-                  validationSchema={validationSchema}
-                  onSubmit={onSubmit}>
-                  {formik => {
-                    return(
-                    <Form className="row g-3">
-                        <div className="form-outline form-white my-2">
-                            <label htmlFor="email" className="">Email</label>
-                            <Field type="text"  className="form-control rounded-pill bg-dark text-white" id="email" name='email'  placeholder='example@mail'/>
-                            <ErrorMessage name='email' component={'div'} className="text-danger"/>
-                        </div>
-                        
-                        <div className="form-outline form-white my-2">
-                            <label htmlFor="password" className="">Password</label>
-                            <Field type="password" className="form-control rounded-pill bg-dark text-white" id="password" name='password'   placeholder="Password"/>
-                            <ErrorMessage name='password' component={'div'} className="text-danger"/>
-                        </div>
-                        <div className="text-center d-grid gap-2">
-                            <button type="submit" onClick={()=> saveUser(user)} className="btn btn-outline-light btn-lg px-5 rounded-pill" disabled={!formik.isValid}>Sign In</button>
+    <div className="bg-light  d-flex flex-row justify-content-center align-items-center">
+      <ToastContainer />
+            <div className="col-12 col-md-8 col-lg-6 col-xl-5 my-3">
+              <div  className="card  bg-dark text-white" style={{borderRadius: "1rem"}}>
+                <div className="card-body p-3">
+                  <div className='mb-md-5 mt-md-4 pb-3'>
+                    <h2 className='text-center text-uppercase mb-3'>Login</h2>
+                    <p className="mb-3 text-center">Please enter your login and password!</p>
+                     {warningMsg}
+                    <Formik
+                        initialValues={initialValues}
+                        validationSchema ={validationSchema}
+                        onSubmit = {loginUser}>
+
+                        {formik => {
+                        return(
+                        <Form className="row g-3">
+                            <div className=" my-2 ">
+                                <label htmlFor="email" className="">Email</label>
+                                <Field type="text"  className="form-control rounded-pill " id="email" name="email" placeholder='example@mail'/>
+                                <ErrorMessage name='email' component={'div'} className="text-danger" />
+                            </div>
+                            <div className=" my-2 ">
+                                <label htmlFor="password" className="">Password</label>
+                                <Field type="password"  className="form-control rounded-pill " id="password" name="password" placeholder='Your Password'/>
+                                <ErrorMessage name='password' component={'div'} className="text-danger" />
+                            </div>
+                            <div className="text-center d-grid gap-2">
+                                <button type="submit" className="btn btn-outline-light btn-dark btn-lg px-5 rounded-pill"  disabled={!formik.isValid || formik.isSubmitting}>
+                                  Sign In
+                                </button>
+                            </div>
+                            <div className="text-center">
+                          <Link className='text-center mt-2 mb-0' to="/forgotPassword">Forgot Password</Link>
                         </div>
                         <div className="d-flex justify-content-center text-center mt-4 pt-1">
                           <Link to="#!" className="text-white"><i className="fab fa-facebook-f fa-lg"></i></Link>
@@ -99,16 +91,16 @@ let[ {id, firstName, lastName,inputEmail,userPhoto }] = user;
                           <Link to="#!" className="text-white"><i className="fab fa-google fa-lg"></i></Link>
                         </div>
                         <div className="text-center">
-                          <p className="text-center mt-5 mb-0">Not a member? <Link className='text-white-50 fw-bold' to="/register">Sign Up</Link></p>
+                          <p className="text-center mt-2 mb-0">Not a member? <Link className='fw-bold' to="/register">Sign Up</Link></p>
                         </div>
-                    </Form>
-                    )}}
-              </Formik>
+                        </Form>
+                        )}}
+                    </Formik>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
   )
 }
 
