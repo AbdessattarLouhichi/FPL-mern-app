@@ -86,7 +86,7 @@ function ListBook() {
                   <tbody>
                     {   
                         state.loading ? 'loading' :   state.books.map((item)=>
-                            <tr key={item.id}> 
+                            <tr key={item._id}> 
                                 <td>{item.title}</td>
                                 <td>{item.author}</td>
                                 <td>{item.category}</td>
