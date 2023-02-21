@@ -11,11 +11,10 @@ function UpdateBook() {
   const [error, setError] = useState('');
   const [post, setPost] = useState({});
   const [data, setData] = useState([{
-    Name:'',
-    Category: '',
-    Description :'',
-    Price:0,
-    Quantity :0
+    name:'',
+    author:'',
+    category: '',
+    description :''
 }]);
 
 useEffect(() => {
@@ -105,7 +104,7 @@ const handleChange = (e)=>{
               </div>
               <div className='my-4'>
                 <label htmlFor="category" className="font-weight-bold">Category</label>
-                <select name="categories" id="category" value={data.Category}  onChange={handleChange}>
+                <select name="category" id="category" value={data.category}  onChange={handleChange}>
                   {
                     loading ? 'loading' : post.map((item)=>
                     <option key={item.category} >{item.category}</option>

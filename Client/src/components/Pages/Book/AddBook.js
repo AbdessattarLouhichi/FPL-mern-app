@@ -25,7 +25,7 @@ function AddBook() {
       setError({error: error.message})
     })
   }, [])
-  
+  console.log(data)
   const addBook = (values)=>{
     
     axios.post('/addBook',values)
@@ -36,9 +36,12 @@ function AddBook() {
     .catch(error =>{console.log(error.message)})
   }
   const handleFileUpload = async (e,setFieldValue)=>{
+    let reader = new FileReader();
     const file = e.target.files[0];
-    console.log(file)
-    setFieldValue('image', file)
+    reader.onloadend = () => {
+      setFieldValue('file', reader.result)
+    }
+    reader.readAsDataURL(file);
   }
 
   const initialValues ={
@@ -96,7 +99,8 @@ function AddBook() {
                 <Field as="select" name="category" id="category" >
                   {
                     loading ? 'loading' : data.map((item)=>
-                    <option key={item.category} >{item.category}</option>
+                   
+                    <option key={item._id} >{item.name}</option>
                     )
                   }
                   {error ? error : null}

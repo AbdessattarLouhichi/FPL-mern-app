@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.post('/addBook', passport.authenticate('bearer', { session: false }),authRole("admin"), upload.single('file'),  createBook);
 
-router.get('/books', passport.authenticate('bearer', { session: false }), getBooks);
+router.get('/books', getBooks);
 
 router.get('/books/:id', passport.authenticate('bearer', { session: false }), getBookById);
 
