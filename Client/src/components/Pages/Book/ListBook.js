@@ -1,6 +1,8 @@
 import React, { useReducer, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import axios from '../../../config/config'
+import 'react-toastify/dist/ReactToastify.css'
+import { toast, ToastContainer } from 'react-toastify'
 
 
 const initialState ={
@@ -46,11 +48,11 @@ function ListBook() {
   const removeBook = async (id)=> {
     if (window.confirm('Do you want to remove?')) {
        await axios.delete(`/books/${id}`)  
-      .then((res) => {
-           
+      .then((response) => {
+        toast.success(response.data.message)
             window.location.reload();
-        }).catch((err) => {
-            console.log(err.message)
+        }).catch((error) => {
+          toast.error(error.response.data.message)
         })
     }
 }
@@ -60,6 +62,7 @@ function ListBook() {
     <section>
    
      <div className="container-md py-5">
+     <ToastContainer />
        <div className="row d-flex justify-content-center align-items-center  mt-5">
          <div className="col-md-12 col-xl-10">
            <div className="card">
@@ -86,6 +89,7 @@ function ListBook() {
                   <tbody>
                     {   
                         state.loading ? 'loading' :   state.books.map((item)=>
+                         
                             <tr key={item._id}> 
                                 <td>{item.title}</td>
                                 <td>{item.author}</td>
@@ -94,10 +98,10 @@ function ListBook() {
                                 <td>{item.link}</td>
                                 <td className="align-middle">
                                   
-                                  <Link  to={"/admin/books/" +item.id}   className='btn btn-success mx-2'>
+                                  <Link  to={"/admin/books/" +item._id}   className='btn btn-success mx-2'>
                                         <i className="fas fa-pencil-alt text-white"></i>
                                   </Link>                           
-                                  <button title="Remove" className='btn btn-danger' onClick={()=> removeBook(item.id)}>
+                                  <button title="Remove" className='btn btn-danger' onClick={()=> removeBook(item._id)}>
                                         <i className="fas fa-trash-alt text-white"></i>
                                   </button>
                                 </td>

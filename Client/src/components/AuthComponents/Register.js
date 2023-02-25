@@ -1,4 +1,6 @@
 import React from 'react';
+import 'react-toastify/dist/ReactToastify.css'
+import { toast, ToastContainer } from 'react-toastify'
 import {Link, useNavigate} from 'react-router-dom';
 import axios from '../../config/config'
 import {Formik,Form,Field,ErrorMessage} from 'formik';
@@ -9,7 +11,7 @@ function Register() {
 
 
     const navigate = useNavigate();
-    const convertToBase64 = (file) => {
+    /*const convertToBase64 = (file) => {
         return new Promise((resolve, reject) => {
           const fileReader = new FileReader();
           fileReader.readAsDataURL(file);
@@ -27,43 +29,49 @@ function Register() {
         const base64 = await convertToBase64(file);
         setFieldValue('userPhoto', base64)
         
-      }
+      }*/
 
     const handleUser =  (values)=>{
-        console.log(values.userPhoto)
         axios.post('/register',values)
-        .then(response =>{
-                            console.log(response.data)
-                            navigate ('/login')
+        .then((response) =>{
+                             navigate ('/login')
+                            toast.success(response.payload.message, {
+                              position: "top-center",
+                            })
                         })
-        .catch(error =>{console.log(error.message)})
+        .catch((error) =>{
+          toast.error(error.response.data.message,{
+            position: "top-center"
+          })
+        })
     };
 
    const initialValues ={
     firstName: '',
     lastName:'',
-    inputEmail:'',
-    inputPassword:'',
+    email:'',
+    password:'',
     confPassword:''
    };
 
    const validationSchema = Yup.object({
     firstName: Yup.string().required('Required'),
     lastName: Yup.string().required('Required'),
-    inputEmail: Yup.string()
+    email: Yup.string()
       .email('Invalid email format')
       .required('Required'),  
-    inputPassword: Yup.string()
+    password: Yup.string()
         .required('Password is required')
         .min(8, 'Password is too short - should be 8 chars minimum.')
         .matches(/[a-zA-Z]/, 'Password can only contain Latin letters.'),
     confPassword: Yup.string()
-     .oneOf([Yup.ref('inputPassword'), null], 'Passwords must match')
+     .oneOf([Yup.ref('password'), null], 'Passwords must match')
   });
          
   return (
    
     <div className="row d-flex justify-content-center align-items-center h-50">
+      <ToastContainer />
     <div className="col-12 col-md-8 my-3">
       <div  className="card bg-dark text-white" style={{borderRadius: "1rem"}}>
         <div className="card-body p-5">
@@ -88,36 +96,19 @@ function Register() {
                         <ErrorMessage name='lastName' component={'div'} className="text-danger"/>
                     </div>
                     <div className=" my-2 ">
-                        <label htmlFor="inputEmail" className="">Email</label>
-                        <Field type="text"  className="form-control rounded-pill bg-dark text-white" id="inputEmail" name="inputEmail" placeholder='example@mail'/>
-                        <ErrorMessage name='inputEmail' component={'div'} className="text-danger" />
+                        <label htmlFor="email" className="">Email</label>
+                        <Field type="text"  className="form-control rounded-pill bg-dark text-white" id="email" name="email" placeholder='example@mail'/>
+                        <ErrorMessage name='email' component={'div'} className="text-danger" />
                     </div>
                     <div className=" my-2">
-                        <label htmlFor="inputPassword" className="">Password</label>
-                        <Field type="password" className="form-control rounded-pill bg-dark text-white" id="inputPassword" name="inputPassword" placeholder="Password"/>
-                        <ErrorMessage name='inputPassword' component={'div'} className="text-danger" />
+                        <label htmlFor="password" className="">Password</label>
+                        <Field type="password" className="form-control rounded-pill bg-dark text-white" id="password" name="password" placeholder="Password"/>
+                        <ErrorMessage name='password' component={'div'} className="text-danger" />
                     </div>
                     <div className=" my-2">
                         <label htmlFor="confPassword" className="">Confirm Password</label>
                         <Field type="password" className="form-control rounded-pill bg-dark text-white" id="confPassword" name="confPassword"/>
                         <ErrorMessage name='confPassword' component={'div'} className="text-danger" />
-                    </div>
-                    <div className="form-group my-4">
-                        <label htmlFor="userPhoto" className="font-weight-bold">Add Photo</label>
-                        <Field name="userPhoto">
-                        {({ form, field }) => {
-                          
-                     const { setFieldValue } = form
-                        return (
-                          <input
-                            type="file"
-                             className='form-control-file'
-                              required
-                          onChange={(e) => handleFileUpload(e, setFieldValue)}
-                             />
-                            )
-                          }}
-                        </Field>
                     </div>
                     <div className="text-center d-grid gap-2">
                         <button type="submit" className="btn btn-outline-light btn-lg px-5 rounded-pill"  disabled={!formik.isValid || formik.isSubmitting}>Sign Up</button>

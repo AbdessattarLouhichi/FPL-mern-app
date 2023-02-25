@@ -8,6 +8,10 @@ const navs = [
         {
             to: '/admin/addBook',
             name:'Add Book'
+        },
+        {
+            to: '/admin/books/id',
+            name:'Update Book'
         }]
     },
     {

@@ -87,9 +87,9 @@ function Books() {
                                 <td>{item.description}</td>
                                 <td className="align-middle">
                                              
-                                  <button title="Download" className='btn btn-success' onClick={()=> downloadBook(item.id)}>
+                                  <a title="Download" className='btn btn-success' onClick={()=> downloadBook(item._id)}>
                                         <p>Download</p>
-                                  </button>
+                                  </a>
                                 </td>
                             </tr>
                             ) 

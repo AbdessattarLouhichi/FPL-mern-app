@@ -11,16 +11,16 @@ var storage = multer.diskStorage({
         cb(null ,Date.now() +'-'+ fileName);
     }
 });
-const acceptedExtensions = ['.pdf']
 
-// Multer Filter
+
+/// Multer Filter
 const multerFilter = (req, file, cb) => {
-    if (acceptedExtensions.includes(file.mimetype)) {
-      cb(null, true);
-    } else {
-      cb(new Error("Not pdf!"), false);
-    }
-  };
-const upload = multer({storage: storage, fileFilter: multerFilter});
+  if (file.mimetype.split("/")[1] === "pdf") {
+    cb(null, true);
+  } else {
+    cb(new Error("Not a PDF File!!"), false);
+  }
+};
+const upload = multer({storage: storage, fileFilter: multerFilter,limits:{fileSize: 50000000,fieldSize: 25*1024*1024}});
 
 export default upload;

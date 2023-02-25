@@ -7,13 +7,13 @@ import { createBook, getBooks, getBookById, deleteBook, updateBook} from "../con
 
 const router = express.Router();
 
-router.post('/addBook', passport.authenticate('bearer', { session: false }),authRole("admin"), upload.single('file'),  createBook);
+router.post('/addBook',[passport.authenticate('bearer', { session: false }),authRole("admin"), upload.single('content')],  createBook);
 
 router.get('/books', getBooks);
 
 router.get('/books/:id', passport.authenticate('bearer', { session: false }), getBookById);
 
-router.put('/books/:id',passport.authenticate('bearer', { session: false }),authRole("admin"), upload.single('file'),  updateBook);
+router.put('/books/:id',[passport.authenticate('bearer', { session: false }),authRole("admin"), upload.single('content')],  updateBook);
 
 router.delete('/books/:id', passport.authenticate('bearer', { session: false }),authRole("admin"), deleteBook);
 

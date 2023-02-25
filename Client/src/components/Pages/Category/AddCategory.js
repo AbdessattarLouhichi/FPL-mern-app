@@ -45,7 +45,7 @@ function AddCategory() {
                 <input type="text" className="form-control" id="name" onChange={handleChange} placeholder="Category Name"/>
               </div>
               {/*Click button  to add category*/}
-              <button  type="submit"  className="btn btn-dark   font-weight-bold">Add Category</button>
+              <button  type="submit"  className="btn btn-dark   font-weight-bold mt-3">Add Category</button>
             </form>
         </div>
         

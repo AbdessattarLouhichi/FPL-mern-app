@@ -7,6 +7,7 @@ export const newDownload = async (req, res)=>{
     try {
       const customer =  await User.findById(req.user._id)
       const book = await Book.findById(req.body._id)
+      console.log(book)
       const path = book.link
       if(customer.countDownload < 5){
         await Book.findByIdAndUpdate(req.body._id, { $inc: { countDownload: +1 } }, { new: true })

@@ -9,7 +9,7 @@ function Header() {
     let  location = useLocation()
   return (
     <div>
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
             <div className="container">
             {/* <!-- Navbar brand -->*/}
                 <Link className="navbar-brand me-2" to="/">

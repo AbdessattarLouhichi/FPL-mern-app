@@ -1,8 +1,9 @@
 import React, {useState,useEffect} from 'react';
+import 'react-toastify/dist/ReactToastify.css'
+import { toast, ToastContainer } from 'react-toastify'
 import {Link, useNavigate} from 'react-router-dom';
-//import { v1 as uuidv1} from 'uuid';
 import axios from '../../../config/config'
-import { Formik, Field, Form, ErrorMessage } from 'formik';
+import { Formik, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
 function AddBook() {
@@ -10,6 +11,7 @@ function AddBook() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [data, setData] = useState({});
+
  
  useEffect(() => {
     axios.get('/categories')
@@ -25,30 +27,29 @@ function AddBook() {
       setError({error: error.message})
     })
   }, [])
-  console.log(data)
-  const addBook = (values)=>{
+ 
+  const onSubmit = async (values, { setSubmitting }) => {
+    let formData = new FormData();
     
-    axios.post('/addBook',values)
-    .then(response =>{
-      console.log(response.data)
-      navigate ('/admin/books')
+      Object.keys(values).forEach(fieldName => {
+        formData.append(fieldName, values[fieldName]);
+      });
+      console.log(formData)
+      await  axios.post('/addBook',formData)
+      .then((response)=>{
+        navigate('/admin/books')
+        toast.success(response.data.message)
       })
-    .catch(error =>{console.log(error.message)})
+      .catch((error)=>{
+        toast.error(error.response.data.message)
+      })
   }
-  const handleFileUpload = async (e,setFieldValue)=>{
-    let reader = new FileReader();
-    const file = e.target.files[0];
-    reader.onloadend = () => {
-      setFieldValue('file', reader.result)
-    }
-    reader.readAsDataURL(file);
-  }
-
   const initialValues ={
     title: '',
     author:'',
     category:'',
-    description:'', 
+    description:'',
+    content:''
   }
 
   const validationSchema = Yup.object({
@@ -64,6 +65,7 @@ function AddBook() {
   return (
     <div>
       <div className="container justify-content-center pt-5 "> 
+      <ToastContainer />
     <div className="row d-flex justify-content-center">
         
         <div className="col-10 bg-white my-4 p-5 rounded">
@@ -71,58 +73,54 @@ function AddBook() {
           <Formik 
                 initialValues={initialValues}
                 validationSchema={validationSchema}
-                onSubmit={addBook}>
-                {formik => {
+                onSubmit={onSubmit}
+          >
+                {formik => { console.log(formik)
               return(
-            <Form>
+            <Form encType="multipart/form-data">
               {/* Product Name input type text*/}
               <div className="form-group">
                 <div className="d-flex justify-content-between mb-2">
                 <label htmlFor="title" className="font-weight-bold">Title</label>
                 <Link to="/admin/dashboard" className=" font-weight-bold text-dark "><i className="fa-solid fa-list-check me-3"></i>List of Books</Link>
                 </div>
-                <Field type="text" className="form-control" id="title" name='title' placeholder="Name"/>
+                <input type="text" className="form-control" id="title" name='title' placeholder="Name"  onChange={formik.handleChange}/>
                 <ErrorMessage name='title' component={'div'} className="text-danger"/>
               </div>
               <div className="form-group my-3">
                 <label htmlFor="author" className="font-weight-bold">Author</label>
-                <Field as="textarea" className="form-control" id="Description" name='author'  rows="3"/>
+                <input type="text" className="form-control" id="Description" name='author'  rows="3"  onChange={formik.handleChange}/>
                 <ErrorMessage name='author' component={'div'} className="text-danger"/>
               </div>
               <div className="form-group my-3">
                 <label htmlFor="description" className="font-weight-bold">Description</label>
-                <Field as="textarea" className="form-control" id="Description" name='description'  rows="3"/>
+                <textarea className="form-control" id="Description" name='description'  rows="3"  onChange={formik.handleChange}/>
                 <ErrorMessage name='description' component={'div'} className="text-danger"/>
               </div>
               <div className='my-4'>
                 <label htmlFor="category" className="font-weight-bold">Category</label>
-                <Field as="select" name="category" id="category" >
+                <select name="category" id="category" onChange={formik.handleChange} >
                   {
                     loading ? 'loading' : data.map((item)=>
                    
-                    <option key={item._id} >{item.name}</option>
+                    <option key={item._id}  onChange={formik.handleChange}>{item.name}</option>
                     )
                   }
                   {error ? error : null}
-                </Field>
+                </select>
               </div>
               <div className="form-group my-4">
-                        <label htmlFor="file" className="font-weight-bold">File link</label>
-                        <Field name="file" encType="multipart/form-data">
-                        {({ form, field }) => {
-                          const { setFieldValue } = form
-                          return (
-                            <input
-                              type="file"
-                              className='form-control-file'
-                              onChange={(e) => handleFileUpload(e, setFieldValue)}
-                            />
-                          )
-                        }}
-                        </Field>
-                    </div>
-          
-              <button  type="submit"  className="btn btn-dark   font-weight-bold" disabled={!formik.isValid || formik.isSubmitting}>Add product</button>
+                        <label htmlFor="content" className="font-weight-bold">File</label>
+                        <input
+                          type="file"
+                          name="content"
+                          className='form-control-file'
+                          onChange={(e) =>
+                            formik.setFieldValue('content', e.currentTarget.files[0])
+                          }
+                        />    
+              </div>
+              <button  type="submit"  className="btn btn-dark   font-weight-bold" disabled={!formik.isValid || formik.isSubmitting}>Add Book</button>
             </Form>
             )}}
           </Formik>

@@ -19,12 +19,10 @@ const bookSchema = new mongoose.Schema({
     link: {
         type:String
       },
-    categories:[ 
-        {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "category"
+    category: {
+          type: String,
         }
-      ],
+      ,
     countDownload: {
       type: Number,
       default: 0

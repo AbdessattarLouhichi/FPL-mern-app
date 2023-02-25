@@ -29,20 +29,22 @@ function Login() {
   
   const loginUser = async (values) => {
     await (axios.post('/login', values))
-    .then((response) =>{  console.log(response);
+    .then((response) =>{
       localStorage.setItem('token', response.data.token)
       localStorage.setItem('id', response.data.id)
       warning && setWarning(false)
+      navigate('/')
       //SUCCESS LOGIN MESSAGE!  You are successfully logged in
-      toast.success(response.payload.message, {
+      toast.success(response.data.message, {
         position: "top-center",
       })
-      setTimeout(()=>{
-        navigate('/')
-      },3000)
+      
     })
-    .catch(()=>{
+    .catch((error)=>{
       setWarning(false)
+      toast.error(error.response.data.message,{
+        position: "top-center"
+      })
     }) 
   }
  

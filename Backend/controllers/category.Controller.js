@@ -3,8 +3,18 @@ import Category from "../models/category.js"
 //Create category
 export const createCategory = async (req,res)=>{
     try {
-        const category = await Category.create(req.body);
-        res.status(201).json({message : 'New category successfully added!', data : category})
+        
+        const name =req.body.name
+        //console.log(name)
+        const found = await Category.findOne({name :name})
+      
+        if (found) {
+            res.status(400).json({message : 'Category name is already exists'})
+        } else {
+            const category = await Category.create(req.body);
+            res.status(201).json({message : 'New category successfully added!', data : category}) 
+        }
+       
     } catch (error) {
         res.status(500).json({message : 'Server Error!'})
     }
