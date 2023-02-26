@@ -1,7 +1,8 @@
 import React, { useReducer, useEffect } from 'react'
 //import { Link } from 'react-router-dom'
 import axios from '../config/config'
-
+import 'react-toastify/dist/ReactToastify.css'
+import { toast, ToastContainer } from 'react-toastify'
 
 const initialState ={
   loading : true,
@@ -45,12 +46,19 @@ function Books() {
   }, [])
   
   const downloadBook = async (id)=> {
-    
-       await axios.post('/download', id)  
-      .then(() => {
-            window.location.reload();
-        }).catch((err) => {
-            console.log(err.message)
+       await axios.get('/download/'+id)  
+      .then((response) => {
+        //response contains PDF file
+        console.log(response.data.data.title)
+        const url = window.URL.createObjectURL(new Blob([response.data]))
+        // Download pdf
+        let alink = document.createElement('a');
+        alink.href = url;
+        alink.download = `${response.data.data.title}.pdf`;
+        alink.click();
+        toast.success(response.data.message)
+        }).catch((error) => {
+          toast.error(error.response.data.message)
         })
     
 }
@@ -58,7 +66,7 @@ function Books() {
   return (
     
     <section>
-    
+    <ToastContainer />
      <div className="container-md py-5">
        <div className="row d-flex justify-content-center align-items-center  mt-5">
          <div className="col-md-12 col-xl-10">
@@ -87,7 +95,7 @@ function Books() {
                                 <td>{item.description}</td>
                                 <td className="align-middle">
                                              
-                                  <a title="Download" className='btn btn-success' onClick={()=> downloadBook(item._id)}>
+                                  <a title="Download" className='btn btn-outline-success text-dark ' onClick={()=> downloadBook(item._id)}>
                                         <p>Download</p>
                                   </a>
                                 </td>

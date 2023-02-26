@@ -1,23 +1,24 @@
 import Download from '../models/download.js'
 import  User from '../models/user.js'
 import Book from '../models/book.js'
-import fs from 'fs'
+//import path from 'path'
 
 export const newDownload = async (req, res)=>{
     try {
       const customer =  await User.findById(req.user._id)
-      const book = await Book.findById(req.body._id)
-      console.log(book)
-      const path = book.link
-      if(customer.countDownload < 5){
-        await Book.findByIdAndUpdate(req.body._id, { $inc: { countDownload: +1 } }, { new: true })
+      const book = await Book.findById(req.params.id)
+      const filePath = book.link
+      if(customer.NumbrDownloads < 5){
+        await Book.findByIdAndUpdate(req.params.id, { $inc: { countDownload: +1 } }, { new: true })
         await User.findByIdAndUpdate(req.user._id, {$inc:{NumbrDownloads: +1}}, {new: true})
-        const file = fs.createReadStream(path)
-        const filename = (new Date()).toISOString()
-        res.setHeader('Content-Disposition', 'attachment: filename="' + filename + '"')
-        file.pipe(res)
-        Download.create({ books: req.body._id, customer: req.user._id })
-      res.send({message: 'downloaded succefully'})
+        res.download(filePath, `${book.title}.pdf`, (err) => {
+          if (err) {
+              console.log(err);
+          }
+        })
+        
+        Download.create({ books: req.params.id, customer: req.user._id })
+      res.send({message: 'downloaded succefully', data: book})
       }
       else {
         res.status(400).json({message: "Only five downloads per month"})
