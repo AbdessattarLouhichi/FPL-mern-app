@@ -4,8 +4,8 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
-import path from 'path'
-import { fileURLToPath } from 'url';
+//import path from 'path'
+//import { fileURLToPath } from 'url';
 import db from './config/connect.js';
 import session from "express-session";
 import passport from "passport";
@@ -32,9 +32,10 @@ app.use(session({
   }))
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true, parameterLimit:50000}));
-const __filename = fileURLToPath(import.meta.url);
+/*const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-app.use(express.static(path.join(__dirname, '/uploads')));
+app.use(express.static(path.join(__dirname, '/uploads')));*/
+app.use('/uploads', express.static('uploads'));
 
 //  Routes
 app.use('/api', authRoutes)

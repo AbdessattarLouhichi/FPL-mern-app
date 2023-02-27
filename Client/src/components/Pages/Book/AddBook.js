@@ -34,7 +34,6 @@ function AddBook() {
       Object.keys(values).forEach(fieldName => {
         formData.append(fieldName, values[fieldName]);
       });
-      console.log(formData)
       await  axios.post('/addBook',formData)
       .then((response)=>{
         navigate('/admin/books')
@@ -75,7 +74,7 @@ function AddBook() {
                 validationSchema={validationSchema}
                 onSubmit={onSubmit}
           >
-                {formik => { console.log(formik)
+                {formik => {
               return(
             <Form encType="multipart/form-data">
               {/* Product Name input type text*/}

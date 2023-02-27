@@ -2,22 +2,42 @@ import Download from '../models/download.js'
 import  User from '../models/user.js'
 import Book from '../models/book.js'
 //import path from 'path'
+//import { fileURLToPath } from 'url';
 
+//const __filename = fileURLToPath(import.meta.url);
+
+//const __dirname = path.dirname(__filename);
+ /* res.download(path.join(__dirname, `${book.link}`), (err) => {
+          if (err) {
+              console.log(err);
+          }
+        })*/
+
+
+// create new download        
 export const newDownload = async (req, res)=>{
     try {
+      // find user
       const customer =  await User.findById(req.user._id)
+      // find book to download
       const book = await Book.findById(req.params.id)
+      // the path of the target book
       const filePath = book.link
+      
+      // check the number of downloads 
       if(customer.NumbrDownloads < 5){
-        await Book.findByIdAndUpdate(req.params.id, { $inc: { countDownload: +1 } }, { new: true })
-        await User.findByIdAndUpdate(req.user._id, {$inc:{NumbrDownloads: +1}}, {new: true})
+        // use res.download to download the target
         res.download(filePath, `${book.title}.pdf`, (err) => {
           if (err) {
               console.log(err);
           }
         })
         
-        Download.create({ books: req.params.id, customer: req.user._id })
+
+      Download.create({ books: req.params.id, customer: req.user._id })
+      // increment
+      await Book.findByIdAndUpdate(req.params.id, { $inc: { countDownload: +1 } }, { new: true })
+      await User.findByIdAndUpdate(req.user._id, {$inc:{NumbrDownloads: +1}}, {new: true})
       res.send({message: 'downloaded succefully', data: book})
       }
       else {
