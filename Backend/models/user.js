@@ -22,6 +22,9 @@ const userSchema = new mongoose.Schema({
     phoneNumber:{
         type : String
     },
+    photo :{
+        type : String
+    },
     role: {
         type: String,
         enum: ["admin", "Normal", "Subscriber"],
