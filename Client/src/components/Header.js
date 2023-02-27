@@ -38,7 +38,7 @@ function Header() {
                     {/*  <!-- Left links -->*/}
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                         <li className="nav-item">
-                        <Link className="nav-link fw-bold" to="/dashboard">Dashboard</Link>
+                        <Link className="nav-link fw-bold" to="/admin">Dashboard</Link>
                         </li>
                     </ul>
                     <div>

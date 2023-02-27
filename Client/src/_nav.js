@@ -25,6 +25,13 @@ const navs = [
             name:'Add category'
         },]
     },
+    {
+        name: 'Users',
+        children: [{
+            to: '/admin/users',
+            name: 'List users'
+        }]
+    }
     
 
 ]

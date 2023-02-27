@@ -1,4 +1,5 @@
 import {lazy} from "react"
+import UsersList from "./components/Pages/User/UsersList"
 const Home = lazy(() => import('./components/Home'))
 const AddBook = lazy(()=> import('./components/Pages/Book/AddBook'))
 const UpdateBook = lazy(() => import('./components/Pages/Book/UpdateBook'))
@@ -20,7 +21,7 @@ export const routes = [
         exact: true
     },
     {
-        path: '/admin/books/id',
+        path: '/admin/books/:id',
         element: UpdateBook,
         name:'UpdateBook',
         exact: true
@@ -37,6 +38,12 @@ export const routes = [
         name:'Categories',
         exact: true
     },
+    {
+        path: '/admin/users',
+        element: UsersList,
+        name: 'Users',
+        exact: true
+    }
 
 ]
 

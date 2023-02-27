@@ -2,6 +2,8 @@ import React, {useState,useEffect} from 'react';
 import {Link, useNavigate,useParams} from 'react-router-dom';
 import { v1 as uuidv1} from 'uuid';
 import axios from '../../../config/config'
+import 'react-toastify/dist/ReactToastify.css'
+import { toast, ToastContainer } from 'react-toastify'
 
 function UpdateBook() {
 
@@ -22,7 +24,9 @@ useEffect(() => {
     const getData = async () => {
       
        await axios.get('/books/' + id)
-      .then(res=> {setData(res.data); console.log(res.data)}
+      .then(res=> {
+        setData(res.data.data)
+      }
       )
       .catch(error => {console.log(error);})
     };
@@ -33,7 +37,7 @@ useEffect(() => {
 useEffect(() => {
     
     axios.get('/categories')
-    .then(res=>{
+    .then(res=>{ 
               setLoading(false)
               setPost(res.data)
               setError('')
@@ -54,12 +58,10 @@ const handleChange = (e)=>{
       id: uuidv1,
       [e.target.id]: e.target.value
     })
-    console.log(data)
   }
 
  
   const updateData = async(e)=>{
-      console.log(data)
     e.preventDefault();
     
     await axios.put('books/' +id, 
@@ -72,14 +74,17 @@ const handleChange = (e)=>{
     }
     )
     .then(response =>{
-      console.log(response)
       navigate ('/admin/books')
+      toast.success(response.data.message)
       })
-    .catch(error =>{console.log(error.message)})
+    .catch(error =>{
+      toast.error(error.response.data.message)
+    })
   }
 
   return (
     <div>
+      <ToastContainer />
       <div className="container justify-content-center pt-5 "> 
     <div className="row d-flex justify-content-center">
         
@@ -107,7 +112,7 @@ const handleChange = (e)=>{
                 <select name="category" id="category" value={data.category}  onChange={handleChange}>
                   {
                     loading ? 'loading' : post.map((item)=>
-                    <option key={item.category} >{item.category}</option>
+                    <option key={item._id} >{item.name}</option>
                     )
                   }
                   {error ? error : null}
