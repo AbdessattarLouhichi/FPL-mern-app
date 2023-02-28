@@ -50,7 +50,7 @@ function Books() {
       .then((response) => {
         /*response contains PDF file
         console.log(response.data.data.title)
-        const url = window.URL.createObjectURL(new Blob([response.data]))
+        const url = window.URL.createObjectURL(new Blob([response.data.data]))
         // Download pdf
         let alink = document.createElement('a');
         alink.href = url;
@@ -81,7 +81,6 @@ function Books() {
                       <th scope="col">Author</th>
                       <th scope="col">Category</th>
                       <th scope="col">Description</th>
-                      <th scope="col">Link</th>
                       <th scope="col">Actions</th>
                     </tr>
                   </thead>
@@ -93,7 +92,6 @@ function Books() {
                                 <td>{item.author}</td>
                                 <td>{item.category}</td>
                                 <td>{item.description}</td>
-                                <td>{item.link}</td>
                                 <td className="align-middle">
                                              
                                   <a title="Download" className='btn btn-outline-success text-dark ' onClick={()=> downloadBook(item._id)} href={item.link} download >

@@ -7,6 +7,7 @@ import {
   createBrowserRouter,
   RouterProvider
 } from "react-router-dom";
+import PrivateRoute from './components/PrivateRoute';
 import React, { Suspense } from 'react';
 import { ToastContainer } from 'react-toastify';
 import {routes, clientRoutes} from './routes'
@@ -57,7 +58,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/admin',
-    element: <Layout />,
+    element: <PrivateRoute Roles={"admin"}><Layout /></PrivateRoute> ,
     children: routing
   }
 

@@ -4,6 +4,7 @@ import { faChevronUp, faEdit, faTrash, faXmark } from '@fortawesome/free-solid-s
 import DataTable from 'react-data-table-component'
 import Modal from 'react-modal';
 import { Formik } from 'formik'
+import 'react-toastify/dist/ReactToastify.css'
 import { toast } from 'react-toastify'
 import userService from '../../../services/userServices'
 
