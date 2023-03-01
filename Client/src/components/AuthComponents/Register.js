@@ -11,34 +11,25 @@ function Register() {
 
 
     const navigate = useNavigate();
-    /*const convertToBase64 = (file) => {
-        return new Promise((resolve, reject) => {
-          const fileReader = new FileReader();
-          fileReader.readAsDataURL(file);
-          fileReader.onload = () => {
-            resolve(fileReader.result);
-          };
-          fileReader.onerror = (error) => {
-            reject(error);
-          };
-        });
-      };
-
-      const handleFileUpload = async (e,setFieldValue)=>{
-        const file = e.target.files[0];
-        const base64 = await convertToBase64(file);
-        setFieldValue('userPhoto', base64)
-        
-      }*/
 
     const handleUser =  (values)=>{
-        axios.post('/register',values)
+      // use FormData to submit form
+      let formData = new FormData();
+      Object.keys(values).forEach(fieldName => {
+        formData.append(fieldName, values[fieldName]);
+      });
+
+      // post request
+        axios.post('/register',formData)
         .then((response) =>{
-                             navigate ('/login')
-                            toast.success(response.payload.message, {
-                              position: "top-center",
-                            })
-                        })
+          console.log(response)
+           
+             navigate('/login')
+            
+            toast.success(response.data.message, {
+              position: "top-center",
+            })
+        })
         .catch((error) =>{
           toast.error(error.response.data.message,{
             position: "top-center"
@@ -46,14 +37,18 @@ function Register() {
         })
     };
 
+
+    //Initial values Formik
    const initialValues ={
     firstName: '',
     lastName:'',
     email:'',
     password:'',
-    confPassword:''
+    confPassword:'',
+    photo:''
    };
 
+   // Yup Validation
    const validationSchema = Yup.object({
     firstName: Yup.string().required('Required'),
     lastName: Yup.string().required('Required'),
@@ -110,6 +105,23 @@ function Register() {
                         <Field type="password" className="form-control rounded-pill bg-dark text-white" id="confPassword" name="confPassword"/>
                         <ErrorMessage name='confPassword' component={'div'} className="text-danger" />
                     </div>
+                    <div className="form-group my-2">
+                                <label htmlFor="photo" className="font-weight-bold">Add Photo</label>
+                                <Field name="photo" encType="multipart/form-data">
+                                {({ form, field }) => {
+                                  
+                            const { setFieldValue } = form
+                                return (
+                                  <input
+                                    type="file"
+                                    name='photo'
+                                    className='form-control-file'
+                                    onChange={(e) =>  setFieldValue('photo', e.target.files[0])}
+                                    />
+                                    )
+                                  }}
+                                </Field>
+                            </div>
                     <div className="text-center d-grid gap-2">
                         <button type="submit" className="btn btn-outline-light btn-lg px-5 rounded-pill"  disabled={!formik.isValid || formik.isSubmitting}>Sign Up</button>
                     </div>

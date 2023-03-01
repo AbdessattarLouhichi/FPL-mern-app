@@ -26,7 +26,7 @@ export const updateUser = async (req,res)=>{
     try {
         if(req.file){
             const fileName = req.file.filename;
-            const photoPath = `http://localhost:3000/storages/uploads/${fileName}`;
+            const photoPath = `http://localhost:3000/uploads/${fileName}`;
             req.body.photo = photoPath;
         }
          await User.findByIdAndUpdate(req.params.id, req.body);

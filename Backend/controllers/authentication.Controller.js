@@ -4,7 +4,7 @@ import  bcrypt from "bcryptjs";
 import jwt  from "jsonwebtoken";
 import crypto from "crypto";
 import sendEmail from "../common/mail.js";
-import { BaseURL, clientURL } from "../config/config.js";
+import { clientURL } from "../config/config.js";
 
 
 
@@ -25,7 +25,13 @@ const register = async (req,res)=>{
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
         req.body.password = hashedPassword;
-        
+
+        // create file path
+        if(req.file){
+            const fileName = req.file.filename;
+            const photoPath = `http://localhost:3000/uploads/${fileName}`;
+            req.body.photo = photoPath;
+        }
         // save user 
         await User.create(req.body);
     
